@@ -1,0 +1,160 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+
+  table.highlight>tbody>tr:hover{
+        background-color: rgba(180,180,180,0.5) !important;
+  }
+
+  tr.trantrow {
+      cursor: pointer;
+  }
+
+  #preloader-overlay {
+    content: '';
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 20000;
+}
+.preloader-wrapper {
+    display: none;
+    position: fixed;
+    z-index: 20001;
+    overflow: show;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.periodtxt {
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+  color: rgba(0,0,0,0.87);
+  font-size: 15px;
+  padding: 15px 5px;
+  font-style: italic;
+  font-weight: bold;
+  margin-top: 30px !important;
+}
+
+.card .card-metrics {
+  display: flex
+}
+
+.card .card-metrics.card-metrics-centered .card-metric {
+  flex: 1;
+  text-align: center
+}
+
+.admin-red{
+  background-color: rgb(238,110,115) !important
+}
+
+.card .card-metrics.card-metrics-static .card-metric:hover {
+  background-color: transparent
+}
+
+.card .card-metrics .card-metric {
+  cursor: pointer;
+  padding: 24px
+}
+
+.card .card-metrics .card-metric:hover {
+  background-color: rgba(0,0,0,0.05)
+}
+
+.card .card-metrics .card-metric .card-metric-title,.card .card-metrics .card-metric .card-metric-value {
+  font-weight: 500;
+  color: #fff
+}
+
+.card-toolbar-title{
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.fixheight{
+  height: 300px;
+}
+
+.card .card-metrics.card-metrics-static .card-metric .card-metric-title,.card .card-metrics.card-metrics-static .card-metric .card-metric-value {
+  font-weight: 500;
+  color: #000
+}
+
+.card .card-metrics .card-metric .card-metric-value {
+  font-size: 26px;
+  font-weight: 300
+}
+
+.card .card-metrics .card-metric .card-metric-change {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #fff;
+}
+
+.card .card-metrics .card-metric .card-metric-change.increase {
+  color: #4CAF50
+}
+
+.card .card-metrics .card-metric .card-metric-change.decrease {
+  color: #F44336
+}
+
+.card .card-metrics .card-metric .card-metric-change i.material-icons {
+  height: 24px;
+  line-height: 24px;
+  margin-right: 0;
+  vertical-align: bottom
+}
+
+.card .card-toolbar {
+  display: flex;
+  padding: 24px;
+  justify-content: space-between;
+  align-items: center
+}
+
+.card .card-toolbar .card-toolbar-title {
+  line-height: 24px
+}
+
+.card .card-toolbar .card-toolbar-actions .dropdown-trigger .material-icons {
+  display: block
+}
+
+.test1212{
+  -webkit-text-size-adjust: 100%;
+  line-height: 1.5;
+  font-weight: normal;
+  color: rgba(0,0,0,0.87);
+  font-family: Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+  font-size: 14px;
+  box-sizing: inherit;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  vertical-align: middle;
+  z-index: 1;
+  transition: .3s ease-out;
+  cursor: pointer;
+  padding: 24px;
+  flex: 1;
+  text-align: center;
+  border-top: 3px solid transparent;
+}

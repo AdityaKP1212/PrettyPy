@@ -1,0 +1,81 @@
+{%extends 'base.html'%}
+
+{% block head %} 
+<title>Index</title>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <div class="row" id="periodcon" data-mindate = "{{templateView['minDate']}}" data-maxdate = "{{templateView['maxDate']}}">
+        <div class="col l6 s6 input-field right-align" id="periodtxt" >
+            Period :
+        </div>
+        <div class="col l3 s3 input-field">
+            <i class="material-icons prefix">date_range</i>
+            <input type="text" id="start" class="datepicker" data-defdate = "{{templateView['startDate']}}" />
+            <label for="start">Start Date</label>
+        </div>
+        <div class="col l3 s3 input-field">
+            <i class="material-icons prefix">date_range</i>
+            <input type="text" id="end" class="datepicker" data-defdate = "{{templateView['endDate']}}" data-refresh="false"/>
+            <label for="end">End Date</label>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class = "row">
+        <canvas id="indexChart" width="400" height="200"></canvas>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- <div class="row"> -->
+    <table class="striped highlight">
+        <thead>
+            <tr>
+                <th>MerchantId</th>
+                <th>Site Url</th>
+                <th>Transaction Count</th>
+                <th>Page View Count</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+    
+        <tbody>
+            {% for mData in templateView["data"] %}
+                <tr class="trantrow" data-mid="{{mData}}">
+                    <td>{{mData}}</td>
+                    <td>{{templateView["data"][mData][2]}}</td>
+                    <td>{{ templateView["data"][mData][0] | numberFormat }}</td>
+                    <td>{{ templateView["data"][mData][1] | numberFormat }}</td>
+                    <td>
+                        {% if templateView["data"][mData][3] %}
+                            <span class="new badge" data-badge-caption="Active"></span>
+                        {% else %}
+                            <span class="new badge red" data-badge-caption="InActive"></span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- </div> -->
+    
+</div>
+<div id="merchantmodal" class="modal modal-fixed-footer"></div>
+
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large teal tooltipped" href="/download?start={{templateView['startDate']}}&end={{templateView['endDate']}}" data-position="left" data-tooltip="Download Report">
+      <i class="large material-icons">file_download</i>
+    </a>
+  </div>
+
+<!-- intialize js variables -->
+<script type="text/javascript">
+    var idxlabels = '{{ templateView["labels"] | tojson }}';
+    var idxpageViews = '{{ templateView["pageCx"] | tojson }}';
+    var idxtransactions = '{{ templateView["tranCx"] | tojson }}';
+</script> 
+{% endblock %}

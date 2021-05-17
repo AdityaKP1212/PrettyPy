@@ -1,0 +1,243 @@
+{%extends 'base.html'%}
+
+{% block head %} 
+<title>Index</title>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row equal-height-grid">
+
+      <div id="periodcon" data-mindate = "{{ merchantData['minDate'] }}" data-maxdate = "{{ merchantData['maxDate'] }}">
+        <div class="col l2 s2 input-field right-align periodtxt" id="periodtxt" >
+            Current Period:
+        </div>
+        <div class="col l2 s2 input-field">
+            <i class="material-icons prefix">date_range</i>
+            <input type="text" id="start1" class="datepicker" data-defdate = "{{ merchantData['s1'] }}" />
+            <label for="start">Start Date</label>
+        </div>
+        <div class="col l2 s2 input-field">
+            <i class="material-icons prefix">date_range</i>
+            <input type="text" id="end1" class="datepicker" data-defdate = "{{ merchantData['e1'] }}" data-refresh="false"/>
+            <label for="end">End Date</label>
+        </div>
+
+        
+        <div class="col l2 s2 input-field right-align period2 periodtxt" id="cmptxt" >
+            Compare With:
+        </div>
+        <div class="col l2 s2 input-field period2">
+            <i class="material-icons prefix">date_range</i>
+            <input type="text" id="start2" class="datepicker" data-defdate = "{{ merchantData['s2'] }}" />
+            <label for="start">Start Date</label>
+        </div>
+        <div class="col l2 s2 input-field period2">
+            <i class="material-icons prefix">date_range</i>
+            <input type="text" id="end2" class="datepicker" data-defdate = "{{ merchantData['e2'] }}" data-refresh="false"/>
+            <label for="end">End Date</label>
+        </div>
+      </div>
+
+      <div class="col l12 s12">
+  
+        <div class="card">
+          
+          <div class="card-metrics card-metrics-toggle card-metrics-centered">
+            <div class="card-metric waves-effect teal" data-metric="merchant">
+              <div class="card-metric-title">Merchant Info</div>
+              <div class="card-metric-value">{{ merchantData["siteUrl"] }}</div>
+                <!-- {% if merchantData["isActive"] %}
+                    <span class="new badge" data-badge-caption="Active"></span>
+                {% else %}
+                    <span class="new badge red" data-badge-caption="InActive"></span>
+                {% endif %} -->
+                <div class="card-metric-change">{{ merchantData["merchantId"] }}</div>
+            </div>
+
+            <div class="card-metric waves-effect admin-red" data-metric="pageviews">
+              <div class="card-metric-title">Page Views</div>
+              <div class="card-metric-value">{{ merchantData["sumPage1"] | numberFormat }}</div>
+              <div class="card-metric-change">
+                {% if merchantData["isPosPage"] %}
+                  <i class="material-icons">keyboard_arrow_up</i>
+                {% else %}
+                  <i class="material-icons">keyboard_arrow_down</i>
+                {% endif %}
+                {{ merchantData["chnPage"] }}%
+              </div>
+            </div>
+
+            <div class="card-metric waves-effect teal" data-metric="transactions">
+              <div class="card-metric-title">Transactions</div>
+              <div class="card-metric-value">{{ merchantData["sumTran1"] | numberFormat }}</div>
+              <div class="card-metric-change">
+                {% if merchantData["isPosTran"] %}
+                  <i class="material-icons">keyboard_arrow_up</i>
+                {% else %}
+                  <i class="material-icons">keyboard_arrow_down</i>
+                {% endif %}
+                {{ merchantData["chnTran"] }}%
+              </div>
+            </div>
+
+            
+            
+          </div>
+          <div class="card-content">
+            <!-- <div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div> -->
+            <canvas class="card-chart" id="insightChart" height="200" width="400" ></canvas>
+          </div>
+        </div>
+  
+      </div>
+  
+      
+      <div class="col l4 m6 s12 fixheight">
+  
+        <div class="card">
+          {% if merchantData["isPosTran"] %}
+            {% set changeCls, icon = ('increase','keyboard_arrow_up') %}  
+          {% else %}
+            {% set changeCls, icon = ('decrease','keyboard_arrow_down') %}
+          {% endif %}
+          <div class="card-stacked">
+            <div class="card-metrics card-metrics-static">
+              <div class="card-metric">
+                <div class="card-metric-title">Transactions</div>
+                <div class="card-metric-value">{{ merchantData["sumTran1"] | numberFormat }}</div>
+                <div class="card-metric-change {{ changeCls }}">
+                  <i class="material-icons left">{{ icon }}</i>
+                  {{ merchantData["chnTran"] }}%
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-chart">
+            <canvas id="flush-area-tran" height="125" width="355" data-change="{{ changeCls }}" class="areaCharts" style="display: block; height: 100px; width: 284px;"></canvas>
+          </div>
+        </div>
+  
+      </div>
+      <div class="col l4 m6 s12 fixheight">
+  
+        <div class="card">
+          {% if merchantData["isPosPage"] %}
+            {% set changeCls, icon = ('increase','keyboard_arrow_up') %}  
+          {% else %}
+            {% set changeCls, icon = ('decrease','keyboard_arrow_down') %}
+          {% endif %}
+          <div class="card-stacked">
+            <div class="card-metrics card-metrics-static">
+              <div class="card-metric">
+                <div class="card-metric-title">PageViews</div>
+                <div class="card-metric-value">{{ merchantData["sumPage1"] | numberFormat }}</div>
+                <div class="card-metric-change {{ changeCls }}">
+                  <i class="material-icons left">{{ icon }}</i>
+                  {{ merchantData["chnPage"] }}%
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-chart">
+            <canvas id="flush-area-page" height="125" width="355" data-change="{{ changeCls }}" class="areaCharts" style="display: block; height: 100px; width: 284px;"></canvas>
+          </div>
+        </div>
+  
+      </div>
+
+      <div class="col l4 m6 s12 fixheight">
+  
+        <div class="card">
+          {% if merchantData["isActive"] %}
+            {% set isActive, col = 'Active', 'teal' %}  
+          {% else %}
+            {% set isActive, col ='InActive', 'red' %}
+          {% endif %}
+          <div class="card-stacked">
+            <div class="card-metrics card-metrics-static">
+              <div class="card-metric">
+                <div class="card-metric-title">Merchant Info</div>
+                <div class="card-metric-value">{{ merchantData["siteUrl"] }}</div>
+                <div class="card-metric-title">
+                  {{ merchantData["merchantId"] }}
+                  <span class="new badge {{ col }}" data-badge-caption="{{ isActive }}"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+  
+      </div>
+      
+  
+      <div class="col l4 m6 s12 fixheight">
+        <div class="card teal white-text">
+          <div class="card-toolbar">
+            <div class="card-toolbar-title"><i class="material-icons left">show_chart</i>Transactions</div>
+          </div>
+          <div class="card-content card-align-bottom">
+            {% if merchantData["isPosTran"] %}
+              {% set changed = 'increased' %}  
+            {% else %}
+              {% set changed = 'decreased' %}
+            {% endif %}
+            <p>Transaction has {{ changed }} {{ merchantData["chnTran"] }}% current period compared to previous period.
+              Transactions are all actions that are recorded in New relic for which the origin server has given response, includes scripts & static content calls, handler calls & bot crawl events.
+            </p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col l4 m6 s12 fixheight">
+        <div class="card admin-red white-text">
+          <div class="card-toolbar">
+            <div class="card-toolbar-title"><i class="material-icons left">touch_app</i>PageViews</div>
+          </div>
+          <div class="card-content card-align-bottom">
+            {% if merchantData["isPosPage"] %}
+              {% set changed = 'increased' %}  
+            {% else %}
+              {% set changed = 'decreased' %}
+            {% endif %}
+            <p>PageViews has {{ changed }} {{ merchantData["chnPage"] }}% current period compared to previous period.
+              PageViews are all page requests that are recorded in New relic for which the origin server has given response, includes error pages 404 & server error page requests.
+            </p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col l4 m6 s12 fixheight">
+        <div class="card teal white-text">
+          <div class="card-toolbar">
+            <div class="card-toolbar-title"><i class="material-icons left">today</i>Merchant Activity</div>
+          </div>
+          <div class="card-content card-align-bottom">
+            {% if merchantData["isActive"] %}
+              {% set activeTxt, nrtxt = ('Provisioned On', 'transactions') %}  
+            {% else %}
+              {% set activeTxt, nrtxt = ('Churned On', 'no transactions') %}
+            {% endif %}
+            <p>Merchant was {{ activeTxt }} {{ merchantData["updatedDate"] }}.  
+              This date is the first time where {{ nrtxt }} were reported on New Relic and accordingly dates were saved in our data store.
+            </p>
+          </div>
+        </div>
+      </div>
+  
+      
+  
+    </div>
+  
+  </div>
+
+  <!-- intialize js variables -->
+<script type="text/javascript">
+  var idxlabels = '{{ merchantData["labels"] | tojson }}';
+  var idxpageViews1 = '{{ merchantData["pageViews1"] | tojson }}';
+  var idxtransactions1 = '{{ merchantData["transactions1"] | tojson }}';
+  var idxpageViews2 = '{{ merchantData["pageViews2"] | tojson }}';
+  var idxtransactions2 = '{{ merchantData["transactions2"] | tojson }}'; 
+</script> 
+{% endblock %}

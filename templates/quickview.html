@@ -1,0 +1,25 @@
+<div class="modal-content" id="merchantmodalcon">
+    <h4 id="merchantmodaltitle">{{ merchantData["siteUrl"] }}</h4>
+    <p id="merchantmodaldata">
+        <b>MerchantId:</b> {{ merchantData["merchantId"] }}
+        {% if merchantData["isActive"] %}
+            {% set datePreText = 'Provisioned On' %}  
+            <span class="new badge" data-badge-caption="Active"></span>
+        {% else %}
+            {% set datePreText = 'Churned On' %}  
+            <span class="new badge red" data-badge-caption="InActive"></span>
+        {% endif %}
+    </br> </br>
+        <b>{{datePreText}}:</b> {{ merchantData["updatedDate"] }}
+    </p>
+    <canvas id="myChart" width="400" height="200"></canvas>
+</div>
+<div class="modal-footer">
+    <a href="/insights/{{ merchantData['merchantId'] }}" class="modal-close waves-effect waves-green btn-flat">More Insights</a>
+</div>
+<!-- intialize js variables
+<script type="text/javascript">
+    var labels = '{{ merchantData["labels"] | tojson }}';
+    var pageViews = '{{ merchantData["pageViews"] | tojson }}';
+    var transactions = '{{ merchantData["transactions"] | tojson }}';
+</script> -->
